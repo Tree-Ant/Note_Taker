@@ -39,9 +39,9 @@ app.get("/api/notes", function(req, res) {
 // * POST `/api/notes`  
 app.post("/api/notes", function (req, res) {
 // - Should recieve a new note to save on the request body, add it to the `db.json` file, 
-const rawdata = fs.readFileSync("db/db.json");
-const parsedata = JSON.parse(rawdata);
-const newObj = parsedata.concat(req.body);
+const unparsed = fs.readFileSync("db/db.json");
+const parsed = JSON.parse(unparsed);
+const newObj = parsed.concat(req.body);
 const string = JSON.stringify(newObj);
 fs.writeFile("db/db.json", string, function(err) {
   if(err) console.log("this is Error" + err);
@@ -53,11 +53,11 @@ fs.writeFile("db/db.json", string, function(err) {
 // * DELETE `/api/notes/:id`
 app.delete('/api/notes/:title', function (req, res) {
   // In order to delete a note, you'll need to read all notes from the `db.json` file,
-  const rawdata = fs.readFileSync("db/db.json");
-  const parsedata = JSON.parse(rawdata);
-  const title = req.params.test
+  const unparsed = fs.readFileSync("db/db.json");
+  const parsed = JSON.parse(unparsed);
+  const title = req.params.title
   //  remove the note with the given `id` property, 
-  const remain = parsedata.filter(o => o.title !== title);
+  const remain = parsed.filter(o => o.title !== title);
   // and then rewrite the notes to the `db.json` file.
   fs.writeFile("db/db.json", JSON.stringify(remain), function (err) {
     if(err) throw err;
